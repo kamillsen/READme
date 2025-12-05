@@ -162,3 +162,4 @@ Sadece yeni sınıf ekledik → **OCP zaferi 🎉**
 
 İstersen şimdi **L — Liskov Substitution Principle**'a geçebiliriz.
 
+

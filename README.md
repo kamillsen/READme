@@ -22,3 +22,4 @@ Yazılım geliştirme ve mülakat hazırlık notları koleksiyonu.
 
 Bu repository, yazılım geliştirme sürecinde öğrenilen kavramların, mülakat hazırlık notlarının ve teknik dokümantasyonun organize bir şekilde saklanması için oluşturulmuştur.
 
+

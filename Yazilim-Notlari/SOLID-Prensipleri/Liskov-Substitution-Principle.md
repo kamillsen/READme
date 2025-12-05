@@ -170,3 +170,4 @@ Bu durumda:
 
 Hazırsan şimdi **ISP – Interface Segregation Principle** için aynı formatta devam edebilirim.
 
+
