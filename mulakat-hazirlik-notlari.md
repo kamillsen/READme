@@ -7,16 +7,16 @@
 ## 📋 İçindekiler
 
 1. [Genel Yazılım & OOP](#1-genel-yazılım--oop-dil-bağımsız)
-2. [C# / .NET Backend](#2-c--net-backend)
-3. [Python / FastAPI & Real-Time](#3-python--fastapi--real-time)
-4. [Frontend – Genel JS / TS](#4-frontend--genel-js--ts)
-5. [Frontend – React](#5-frontend--react)
-6. [Frontend – Vue 3 / Nuxt 3–4](#6-frontend--vue-3--nuxt-34)
-7. [Frontend – Angular](#7-frontend--angular)
-8. [Veritabanı, SQL Modelleme & ORM](#8-veritabanı-sql-modelleme--orm)
-9. [Mimari & Sistem Tasarımı](#9-mimari--sistem-tasarımı)
-10. [Messaging, Cache & Gerçek Zamanlı İletişim](#10-messaging-cache--gerçek-zamanlı-iletişim)
-11. [Web Temelleri & Network](#11-web-temelleri--network)
+2. [Web Temelleri & Network](#2-web-temelleri--network)
+3. [Veritabanı, SQL Modelleme & ORM](#3-veritabanı-sql-modelleme--orm)
+4. [C# / .NET Backend](#4-c--net-backend)
+5. [Python / FastAPI & Real-Time](#5-python--fastapi--real-time)
+6. [Frontend – Genel JS / TS](#6-frontend--genel-js--ts)
+7. [Frontend – React](#7-frontend--react)
+8. [Frontend – Vue 3 / Nuxt 3–4](#8-frontend--vue-3--nuxt-34)
+9. [Frontend – Angular](#9-frontend--angular)
+10. [Mimari & Sistem Tasarımı](#10-mimari--sistem-tasarımı)
+11. [Messaging, Cache & Gerçek Zamanlı İletişim](#11-messaging-cache--gerçek-zamanlı-iletişim)
 12. [DevOps & Araçlar](#12-devops--araçlar)
 13. [Full-Stack Olarak Genel Sorabilecekleri](#13-full-stack-olarak-genel-sorabilecekleri)
 
@@ -26,7 +26,7 @@
 
 ### Neleri Çalışmalısın?
 
-- ✅ **OOP Prensipleri**
+- ✅ **OOP Prensipleri** TAMAM
   - Encapsulation (Kapsülleme)
   - Inheritance (Kalıtım)
   - Polymorphism (Çok Biçimlilik)
@@ -34,50 +34,143 @@
   - Abstract Class kavramı
   - Interface vs Abstract Class farkı
 
-- ✅ **SOLID Prensipleri**
+- ✅ **SOLID Prensipleri** TAMAM 
   - Single Responsibility Principle
   - Open/Closed Principle
   - Liskov Substitution Principle
   - Interface Segregation Principle
   - Dependency Inversion Principle
 
-- ✅ **Dependency Injection (DI)**
-  - DI Container kullanımı
-  - Constructor injection
-  - Service lifetime yönetimi
-
-- ✅ **Tasarım Desenleri**
+- ✅ **Tasarım Desenleri** TAMAM
   - Repository Pattern
   - Unit of Work Pattern
   - Singleton Pattern
   - Factory Pattern
-
-- ✅ **Layered / N-Katmanlı Mimari**
-  - UI (Presentation) Katmanı
-  - Business (Service) Katmanı
-  - Data Access Katmanı
-  - Katmanlar arası iletişim
 
 - ✅ **Clean Code & Refactoring**
   - Kod okunabilirliği
   - Refactoring teknikleri
   - Code smell'ler
 
-- ✅ **Exception Handling**
-  - Try/catch blokları
-  - Global error handling mantığı
-  - Custom exception'lar
-  - "Production'da bir hata olursa nasıl yakalarsın?" sorusuna cevap
-  - Error logging ve monitoring
+- ✅ **Exception Handling (Genel Prensipler)**
+  - Try/catch blokları mantığı
+  - Exception türleri ve hiyerarşisi
+  - Custom exception'lar oluşturma
+  - Exception handling best practices
+  - Hata yakalama stratejileri
 
 - ✅ **Asenkron Programlama Mantığı**
   - Thread kavramı
-  - Async/await kullanımı
+  - Async/await kullanımı (genel prensip)
   - Deadlock riskleri ve önleme
 
 ---
 
-## 2. C# / .NET BACKEND
+## 2. WEB TEMELLERİ & NETWORK
+
+### Neleri Çalışmalısın?
+
+- ✅ **HTTP Protokolü Temel Kavramlar**
+  - **Methodlar:**
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+  - **Status Code'lar:**
+    - 200 (OK)
+    - 201 (Created)
+    - 400 (Bad Request)
+    - 401 (Unauthorized)
+    - 403 (Forbidden)
+    - 404 (Not Found)
+    - 500 (Internal Server Error)
+
+- ✅ **HTTP vs HTTPS**
+  - TLS/SSL genel mantığı
+  - Certificate yönetimi
+  - Security best practices
+
+- ✅ **DNS Nedir, Nasıl Çalışır**
+  - Domain → IP çözümleme
+  - DNS record types
+  - DNS caching
+
+- ✅ **CORS (Cross-Origin Resource Sharing)**
+  - Same-Origin Policy
+  - Preflight request fikri
+  - CORS headers
+
+- ✅ **Cookie, Session, localStorage Farkları**
+  - Storage mechanisms
+  - Security considerations
+  - Use cases
+
+- ✅ **Temel Güvenlik Konuları**
+  - **XSS (Cross-Site Scripting)**
+  - **CSRF (Cross-Site Request Forgery)**
+  - **SQL Injection** (özellikle backend & DB tarafı)
+
+---
+
+## 3. VERİTABANI, SQL MODELLEME & ORM
+
+### Neleri Çalışmalısın?
+
+- ✅ **SQL Temel Sorgular**
+  - SELECT
+  - INSERT
+  - UPDATE
+  - DELETE
+
+- ✅ **JOIN Türleri**
+  - INNER JOIN
+  - LEFT JOIN
+  - RIGHT JOIN
+  - FULL OUTER JOIN
+
+- ✅ **Normalizasyon & Denormalizasyon**
+  - 1NF (First Normal Form)
+  - 2NF (Second Normal Form)
+  - 3NF (Third Normal Form)
+  - Denormalizasyon senaryoları
+
+- ✅ **Index Mantığı**
+  - Clustered index
+  - Non-clustered index
+  - Index kullanım stratejileri
+
+- ✅ **Transaction ve ACID Prensipleri**
+  - Atomicity
+  - Consistency
+  - Isolation
+  - Durability
+
+- ✅ **MSSQL & PostgreSQL Farkına Genel Bakış**
+  - Syntax farkları
+  - Özellik karşılaştırması
+  - Kullanım senaryoları
+
+- ✅ **SQL Model Tasarımı**
+  - Tablolar
+  - İlişkiler (Relationships)
+  - Foreign key
+  - Cascade davranışı
+
+- ✅ **ORM Nedir, Ne İşe Yarar**
+  - EF Core
+  - SQLAlchemy
+  - ORM avantaj/dezavantajları
+
+- ✅ **EF Core Özelinde**
+  - Change tracking
+  - Lazy loading
+  - Eager loading
+  - Migrations
+
+---
+
+## 4. C# / .NET BACKEND
 
 ### Neleri Çalışmalısın?
 
@@ -99,6 +192,12 @@
   - Middleware pipeline
   - DI Container (ServiceCollection)
 
+- ✅ **Dependency Injection (DI)**
+  - DI Container kullanımı (ServiceCollection)
+  - Constructor injection
+  - Service lifetime yönetimi (Scoped, Singleton, Transient)
+  - Service registration ve resolution
+
 - ✅ **ASP.NET Core Web API Temelleri**
   - Controller yapısı
   - Action methods
@@ -116,14 +215,22 @@
   - "Bir API'yi nasıl test edersin?" sorusuna cevap
 
 - ✅ **Entity Framework Core**
-  - ORM mantığı
   - Change tracking
   - Migrations
+  - DbContext yönetimi
+  - Query optimization
 
 - ✅ **LINQ ile Veri Sorgulama**
   - Query syntax
   - Method syntax
   - IQueryable vs IEnumerable
+
+- ✅ **Asenkron Programlama (.NET)**
+  - Task ve Task<T> kullanımı
+  - Async/await .NET implementasyonu
+  - ConfigureAwait kullanımı
+  - Async void vs async Task
+  - IAsyncEnumerable
 
 - ✅ **Repository Pattern & Unit of Work**
   - Repository implementasyonu
@@ -165,7 +272,7 @@
 
 ---
 
-## 3. PYTHON / FASTAPI & REAL-TIME
+## 5. PYTHON / FASTAPI & REAL-TIME
 
 ### Neleri Çalışmalısın?
 
@@ -234,7 +341,7 @@
 
 ---
 
-## 4. FRONTEND – GENEL JS / TS
+## 6. FRONTEND – GENEL JS / TS
 
 ### Neleri Çalışmalısın?
 
@@ -272,7 +379,7 @@
 
 ---
 
-## 5. FRONTEND – REACT
+## 7. FRONTEND – REACT
 
 ### Neleri Çalışmalısın?
 
@@ -313,7 +420,7 @@
 
 ---
 
-## 6. FRONTEND – VUE 3 / NUXT 3–4
+## 8. FRONTEND – VUE 3 / NUXT 3–4
 
 ### Neleri Çalışmalısın?
 
@@ -367,7 +474,7 @@
 
 ---
 
-## 7. FRONTEND – ANGULAR
+## 9. FRONTEND – ANGULAR
 
 ### Neleri Çalışmalısın?
 
@@ -404,66 +511,27 @@
 
 ---
 
-## 8. VERİTABANI, SQL MODELLEME & ORM
+## 10. MİMARİ & SİSTEM TASARIMI
 
 ### Neleri Çalışmalısın?
 
-- ✅ **SQL Temel Sorgular**
-  - SELECT
-  - INSERT
-  - UPDATE
-  - DELETE
-
-- ✅ **JOIN Türleri**
-  - INNER JOIN
-  - LEFT JOIN
-  - RIGHT JOIN
-  - FULL OUTER JOIN
-
-- ✅ **Normalizasyon & Denormalizasyon**
-  - 1NF (First Normal Form)
-  - 2NF (Second Normal Form)
-  - 3NF (Third Normal Form)
-  - Denormalizasyon senaryoları
-
-- ✅ **Index Mantığı**
-  - Clustered index
-  - Non-clustered index
-  - Index kullanım stratejileri
-
-- ✅ **Transaction ve ACID Prensipleri**
-  - Atomicity
-  - Consistency
-  - Isolation
-  - Durability
-
-- ✅ **MSSQL & PostgreSQL Farkına Genel Bakış**
-  - Syntax farkları
-  - Özellik karşılaştırması
-  - Kullanım senaryoları
-
-- ✅ **SQL Model Tasarımı**
-  - Tablolar
-  - İlişkiler (Relationships)
-  - Foreign key
-  - Cascade davranışı
-
-- ✅ **ORM Nedir, Ne İşe Yarar**
-  - EF Core
-  - SQLAlchemy
-  - ORM avantaj/dezavantajları
-
-- ✅ **EF Core Özelinde**
-  - Change tracking
-  - Lazy loading
-  - Eager loading
-  - Migrations
-
----
-
-## 9. MİMARİ & SİSTEM TASARIMI
-
-### Neleri Çalışmalısın?
+- ✅ **Uygulama Mimari Desenleri**
+  - **Layered / N-Katmanlı Mimari**
+    - UI (Presentation) Katmanı
+    - Business (Service) Katmanı
+    - Data Access Katmanı
+    - Katmanlar arası iletişim
+  - **Clean Architecture**
+    - Dependency rule
+    - Use cases
+    - Entities ve value objects
+  - **Onion Architecture**
+    - Domain core
+    - Application layer
+    - Infrastructure layer
+  - **Hexagonal Architecture (Ports & Adapters)**
+    - Ports kavramı
+    - Adapters (primary/secondary)
 
 - ✅ **Monolith vs Microservice Mimarisı**
   - Monolith avantaj/dezavantajları
@@ -512,7 +580,7 @@
 
 ---
 
-## 10. MESSAGING, CACHE & GERÇEK ZAMANLI İLETİŞİM
+## 11. MESSAGING, CACHE & GERÇEK ZAMANLI İLETİŞİM
 
 ### Neleri Çalışmalısın?
 
@@ -539,53 +607,6 @@
   - Event sourcing
   - CQRS pattern
   - Message brokers
-
----
-
-## 11. WEB TEMELLERİ & NETWORK
-
-### Neleri Çalışmalısın?
-
-- ✅ **HTTP Protokolü Temel Kavramlar**
-  - **Methodlar:**
-    - GET
-    - POST
-    - PUT
-    - PATCH
-    - DELETE
-  - **Status Code'lar:**
-    - 200 (OK)
-    - 201 (Created)
-    - 400 (Bad Request)
-    - 401 (Unauthorized)
-    - 403 (Forbidden)
-    - 404 (Not Found)
-    - 500 (Internal Server Error)
-
-- ✅ **HTTP vs HTTPS**
-  - TLS/SSL genel mantığı
-  - Certificate yönetimi
-  - Security best practices
-
-- ✅ **DNS Nedir, Nasıl Çalışır**
-  - Domain → IP çözümleme
-  - DNS record types
-  - DNS caching
-
-- ✅ **CORS (Cross-Origin Resource Sharing)**
-  - Same-Origin Policy
-  - Preflight request fikri
-  - CORS headers
-
-- ✅ **Cookie, Session, localStorage Farkları**
-  - Storage mechanisms
-  - Security considerations
-  - Use cases
-
-- ✅ **Temel Güvenlik Konuları**
-  - **XSS (Cross-Site Scripting)**
-  - **CSRF (Cross-Site Request Forgery)**
-  - **SQL Injection** (özellikle backend & DB tarafı)
 
 ---
 
@@ -669,18 +690,19 @@
 ### İlk Turda Öncelik Verilecek Kategoriler:
 
 1. **Kategori 1:** Genel Yazılım & OOP
-2. **Kategori 2:** C# / .NET Backend
-3. **Kategori 4:** Frontend – Genel JS / TS
-4. **Kategori 5:** Frontend – React
-5. **Kategori 9:** Mimari & Sistem Tasarımı
+2. **Kategori 2:** Web Temelleri & Network
+3. **Kategori 3:** Veritabanı, SQL & ORM
+4. **Kategori 4:** C# / .NET Backend
+5. **Kategori 10:** Mimari & Sistem Tasarımı
 6. **Kategori 12:** DevOps & Araçlar
 
-> **Not:** Bu kategoriler core backend + mimari + devops konularını kapsar.
+> **Not:** Bu kategoriler temel kavramlar + backend + mimari + devops konularını kapsar.
 
 ### Sonraki Aşama:
 
-- Frontend kategorilerini (5, 6, 7, 8) derinleştir
-- Veritabanı ve ORM konularını pekiştir
+- Frontend kategorilerini (6, 7, 8, 9) derinleştir
+- Python / FastAPI konularını pekiştir
+- Messaging, Cache & Gerçek Zamanlı İletişim üzerinde çalış
 - Full-stack senaryoları üzerinde çalış
 
 ---
@@ -689,7 +711,7 @@
 
 İstersen bir sonraki adımda şunu yapabiliriz:
 
-> **"Mesela Kategori 2 – C#/.NET Backend için sana tam mülakat soru listesi yazayım, sen de cevaplamaya çalış, ben de cevaplarını düzelteyim."**
+> **"Mesela Kategori 4 – C#/.NET Backend için sana tam mülakat soru listesi yazayım, sen de cevaplamaya çalış, ben de cevaplarını düzelteyim."**
 
 Doğrudan hangi kategoriden başlamak istediğini söyle, oradan yardırırız.
 
