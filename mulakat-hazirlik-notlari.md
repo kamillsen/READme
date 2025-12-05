@@ -199,9 +199,11 @@
   - Service registration ve resolution
 
 - ✅ **ASP.NET Core Web API Temelleri**
-  - Controller yapısı
-  - Action methods
+  - Controller ve Action mantığı
   - Routing
+  - Attribute routing
+  - Model binding
+  
 
 - ✅ **REST API Tasarımı**
   - Resource kavramı
