@@ -1,0 +1,41 @@
+
+1) SSH / SSH Key nedir ?
+
+2) bir class başka bir classs'ı parametre olarak alabilir mi ?
+
+3) Miras almada (inheritance) tüm değişken ve metotlar Parenttan Child'a geçer mi ? (Private , Public vs) Ve erişim nasıl sağlanır Child nesnesinde ya da Child'da üretilen objede ?
+
+4) Interface ve Abstract class farkı , neden varlar, hangi ihtiyaçtan dolayı yazılımcılar bunu üretmiş ?
+
+5) Node.js nedir ? Node.js Developer ne yapar ? Node.js nasıl yazılır ? .Net üzerinden örnek ver ? c# -> .net gibi.
+
+6) public class Dog : Animal
+Mirasın tanımlandığı yer burası.
+
+Derleyiciye şunu söylüyorsun:
+“Dog, Animal’dan türeyen bir sınıftır (Dog is-an Animal).”
+
+Bu bilgi derleme zamanında (compile time) kesinleşir.
+
+Bunları diyor ama compiler time nedir ? Başka Hangi time (aşama) var kod çalışırken bunları bana sırasıyla anlat ? Her dilde aynı mı bu ?
+
+7) Pipline ne demek yazılımda ?
+
+8) .NET Aspire ?
+
+9) Docker - Portainer ?
+
+10) Ocelot nedir ?
+
+11) Gateway nedir ?
+
+12)   public BasketsController(IBasketService basketService, ILoginService loginService)
+        {
+            _basketService = basketService;
+            _loginService = loginService;
+        } 
+
+        burda constructor metotat interface'i parametre olarak vermek garibime gidiyor. Nasıl böyle bir şey olabilir ? Arka planda nasıl bir kod var ?
+
+
+13) 

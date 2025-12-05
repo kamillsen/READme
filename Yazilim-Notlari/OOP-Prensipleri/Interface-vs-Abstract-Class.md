@@ -1,0 +1,377 @@
+# 🧩 Interface vs Abstract Class – Karşılaştırma ve Kullanım Rehberi (C#)
+
+## 1️⃣ Interface Nedir?
+
+**Interface** = Sadece sözleşme (contract) tanımlar, gövdesi olmayan method imzaları içerir.
+
+```csharp
+public interface IAnimal
+{
+    void Speak();
+    void Eat();
+}
+```
+
+**Kurallar:**
+
+* Interface'te **gövdesiz** method → implement eden sınıf **YAZMAK ZORUNDA** ✅
+* Interface'te **gövdesi olan** method (C# 8+) → implement eden sınıf **yazmak zorunda DEĞİL** (opsiyonel)
+
+**Örnek:**
+
+```csharp
+public class Dog : IAnimal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Hav!");
+    }
+
+    public void Eat()
+    {
+        Console.WriteLine("Mama yiyor.");
+    }
+}
+```
+
+---
+
+## 2️⃣ Abstract Class Nedir?
+
+**Abstract class** = Hem somut (concrete) hem soyut (abstract) üyeler içerebilen sınıf.
+
+```csharp
+public abstract class Animal
+{
+    public string Name { get; set; }  // somut üye
+
+    public void Eat()                  // somut method
+    {
+        Console.WriteLine($"{Name} is eating.");
+    }
+
+    public abstract void Speak();      // soyut method
+}
+```
+
+**Kurallar:**
+
+* Abstract class **new'lenemez**, sadece miras alınır.
+* `abstract` methodlar türeyen sınıflarda **override zorunlu**.
+
+---
+
+## 3️⃣ Interface ile Abstraction – IAnimal örneği
+
+### 3.1. Interface = Sözleşme
+
+```csharp
+public interface IAnimal
+{
+    void Speak();
+}
+```
+
+Bunu implement eden sınıflar:
+
+```csharp
+public class Dog : IAnimal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Hav!");
+    }
+}
+
+public class Cat : IAnimal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Miyav!");
+    }
+}
+```
+
+> Teknik olarak: **Dog, IAnimal'i implement eder.**
+> Tip sistemi açısından: **Dog is an IAnimal** (Dog bir IAnimal'dir).
+
+Bu yüzden şu tamamen doğru:
+
+```csharp
+IAnimal a1 = new Dog();
+IAnimal a2 = new Cat();
+
+a1.Speak(); // "Hav!"
+a2.Speak(); // "Miyav!"
+```
+
+---
+
+### 3.2. IAnimal kullanan AnimalTrainer (neden interface aldığımızı gösteriyor)
+
+```csharp
+public class AnimalTrainer
+{
+    private readonly IAnimal _animal;
+
+    public AnimalTrainer(IAnimal animal)
+    {
+        _animal = animal;
+    }
+
+    public void MakeAnimalSpeak()
+    {
+        _animal.Speak();
+    }
+}
+```
+
+**Kullanım:**
+
+```csharp
+var dogTrainer = new AnimalTrainer(new Dog());
+dogTrainer.MakeAnimalSpeak(); // Hav!
+
+var catTrainer = new AnimalTrainer(new Cat());
+catTrainer.MakeAnimalSpeak(); // Miyav!
+```
+
+Burada:
+
+* `AnimalTrainer`, **Dog'u da Cat'i de BİLMEZ**.
+* Sadece şunu bilir:
+  > "Elimde bir `IAnimal` var, `Speak()` yapabiliyor, bu bana yeter."
+
+Bu, logger örneğine birebir denk:
+
+* `IAnimal` ↔ `ILogger`
+* `Dog/Cat` ↔ `ConsoleLogger/FileLogger`
+* `AnimalTrainer` ↔ `OrderService`
+
+**Neden böyle yapmak daha iyi?**
+
+* Trainer, tek bir somut tipe (Dog) **betonla yapışmıyor**.
+* Yarın `Bird : IAnimal` yazarsın,
+  `new AnimalTrainer(new Bird())` dersen, Trainer koduna **hiç dokunmadan** yeni hayvan çalışır.
+
+Bu da abstraction'ın tam amacı:
+
+> Kodu **somut sınıfa** değil, **soyut sözleşmeye** bağla.
+
+---
+
+## 4️⃣ Interface Implementasyon Kuralları
+
+### 4.1. Klasik kural (junior için yeterli zihinsel model)
+
+Çok yaygın (ve hala en çok kullanılan) kullanım:
+
+```csharp
+public interface IAnimal
+{
+    void Speak();
+    void Eat();
+}
+```
+
+Bu interface'i implement eden sınıf, **tüm methodları yazmak zorundadır**:
+
+```csharp
+public class Dog : IAnimal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Hav!");
+    }
+
+    public void Eat()
+    {
+        Console.WriteLine("Mama yiyor.");
+    }
+}
+```
+
+Bunu aklında şöyle tutabilirsin:
+
+> "Interface bir **sözleşme**.
+> Ben `IAnimal`'i implement ediyorsam,
+> bu sözleşmedeki **tüm imzaları** doldurmak zorundayım."
+
+---
+
+### 4.2. Modern C#: Interface içinde gövdesi olan method (default implementation)
+
+Yeni C# sürümlerinde (C# 8+), interface içinde **gövdesi olan method** da olabilir:
+
+```csharp
+public interface IAnimal
+{
+    void Speak(); // gövdesiz → zorunlu
+
+    void Eat()    // gövdesi var → default implementation
+    {
+        Console.WriteLine("Default olarak yemek yiyor.");
+    }
+}
+```
+
+Dog bunu implement ederse:
+
+```csharp
+public class Dog : IAnimal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Hav!");
+    }
+
+    // Eat'i yazmak zorunda değil.
+    // Yazmazsa interface'in default Eat'i çalışır.
+}
+```
+
+Buradaki kural:
+
+* Interface'te **gövdesiz** method → implement eden sınıf **YAZMAK ZORUNDA** ✅
+* Interface'te **gövdesi olan** method → implement eden sınıf **yazmak zorunda DEĞİL**
+  (isterse override gibi kendi versiyonunu yazar, istemezse interface'in default'unu kullanır)
+
+**Kısaca:**
+
+* Interface'te **gövdesiz olanlar** → sınıf için **zorunlu**
+* Interface'te **gövdesi olanlar** → sınıf için **opsiyonel**
+
+Junior seviye düşüncesi için şöyle diyebilirsin:
+
+> "Interface implement ediyorsam, içindeki **abstract gibi gövdesiz her şeyi** yazmak zorundayım.
+> Gövdesi olan varsa bonus; ister kullanırım, ister kendim yazarım."
+
+---
+
+## 5️⃣ Abstract Class vs Interface – Karşılaştırma Tablosu
+
+| Özellik | Abstract Class | Interface |
+|--------|----------------|-----------|
+| **New'lenebilir mi?** | ❌ Hayır | ❌ Hayır |
+| **Gövdesi olan method** | ✅ Var (normal method) | ✅ Var (C# 8+, default implementation) |
+| **Gövdesiz method** | ✅ Var (`abstract` method) | ✅ Var (klasik interface) |
+| **Field/Property** | ✅ Var | ❌ Yok (C# 8+ property olabilir ama field yok) |
+| **Constructor** | ✅ Var | ❌ Yok |
+| **Çoklu miras** | ❌ Tek base class | ✅ Birden fazla interface implement edilebilir |
+| **Access modifier** | ✅ `public`, `protected`, `private` | ❌ Sadece `public` (implicit) |
+| **Ortak kod** | ✅ Ortak kod ve state tutabilir | ❌ Sadece sözleşme (C# 8+ default implementation hariç) |
+
+---
+
+## 6️⃣ Ne Zaman Hangisini Kullanmalı?
+
+### 🔹 Abstract Class (Animal) kullan:
+
+**Kullanım senaryoları:**
+
+* Ortak durum (state) ve ortak kod varsa:
+  * `Name`, `Age`, `Eat()` gibi hem alan hem gövdesi olan method.
+* Gerçek bir "üst tür" modellemek istiyorsan:
+  * Her `Dog` ve `Cat` gerçekten birer `Animal`.
+* Türeyen sınıfların ortak bir base'e ihtiyacı varsa.
+
+**Örnek:**
+
+```csharp
+public abstract class Animal
+{
+    public string Name { get; set; }  // ortak state
+    public int Age { get; set; }
+
+    public void Eat()                  // ortak davranış
+    {
+        Console.WriteLine($"{Name} is eating.");
+    }
+
+    public abstract void Speak();      // herkes kendine göre
+}
+```
+
+---
+
+### 🔹 Interface (IAnimal, ILogger) kullan:
+
+**Kullanım senaryoları:**
+
+* Sadece "şu davranış var" demek istiyorsan:
+  * `void Speak()`, `void Log(string message)`, `void Save()`.
+* Bir sınıfın birden fazla rolü olsun istiyorsan:
+
+```csharp
+class Dog : Animal, IGuard, IPet, IRunner
+{
+    // Dog hem Animal'dan miras alır
+    // hem de IGuard, IPet, IRunner rollerini üstlenir
+}
+```
+
+* Farklı hiyerarşilerden sınıfların ortak davranışı varsa:
+  * `Bird : Animal, IFlyable`
+  * `Airplane : Vehicle, IFlyable`
+  * İkisi de `IFlyable` ama farklı base class'lardan geliyor.
+
+**Örnek:**
+
+```csharp
+public interface ILogger
+{
+    void Log(string message);
+}
+
+public class ConsoleLogger : ILogger
+{
+    public void Log(string message)
+    {
+        Console.WriteLine(message);
+    }
+}
+
+public class FileLogger : ILogger
+{
+    public void Log(string message)
+    {
+        File.AppendAllText("log.txt", message);
+    }
+}
+```
+
+---
+
+## 7️⃣ Özet: Abstract Class vs Interface
+
+**Abstract class → "ortak taban + sözleşme"**
+
+* Ortak kod ve state tutar
+* Gerçek bir üst tür modeli
+* Tek base class (C# çoklu miras desteklemez)
+
+**Interface → "sadece sözleşme / rol"**
+
+* Sadece davranış tanımlar
+* Çoklu interface implement edilebilir
+* Farklı hiyerarşilerden sınıflar ortak davranış paylaşabilir
+
+---
+
+## 🎯 Kısacık Özet (Akılda Kalsın)
+
+* **Abstract class** → Ortak kod ve state varsa, gerçek bir üst tür modellemek için.
+
+* **Interface** → Sadece davranış tanımlamak, çoklu rol vermek için.
+
+* **Interface implement ederken:**
+  * Gövdesiz olanlar → **zorunlu** yazılmalı
+  * Gövdesi olanlar (default) → **opsiyonel**
+
+* **Abstract class'tan türerken:**
+  * `abstract` methodlar → **zorunlu** override
+  * `virtual` methodlar → **opsiyonel** override
+
+* **Her ikisi de abstraction sağlar:**
+  * Kodu somut sınıflara değil, soyut sözleşmelere bağlar.
+
