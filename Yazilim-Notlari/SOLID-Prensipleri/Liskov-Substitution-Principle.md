@@ -176,3 +176,4 @@ Hazırsan şimdi **ISP – Interface Segregation Principle** için aynı formatt
 
 
 
+

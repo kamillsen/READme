@@ -171,3 +171,4 @@ Hazırsan **Open/Closed Principle** için de aynı formatta not hazırlayabiliri
 
 
 
+
