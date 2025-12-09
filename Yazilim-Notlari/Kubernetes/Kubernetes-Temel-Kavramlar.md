@@ -317,3 +317,440 @@ Microsoft'un ve diğer kaynakların önerdiği tipik yol şu:
 * **Deployment**: "Bu uygulamadan şu kadar kopya çalışsın, şu image'i kullansın" diye yazdığın tanım; Kubernetes bu tanıma göre pod'ları yönetiyor.
 * **Service**: Pod'lara erişmek için sabit isim/adres + yük dengeleme katmanı.
 
+---
+
+## 9. Docker Image + Container + Kubernetes Üçlüsü
+
+Şimdi **Docker image + container + Kubernetes** üçlüsünü tek hikâye gibi anlatacağım ve araya bol bol ASCII diagram koyacağım.
+Her terimi cümlenin içinde açıklayacağım, "biliniyor" varsaymayacağım.
+
+---
+
+### 9.1 En baştan: Uygulama → Image → Container
+
+Sen bir **ASP.NET Core Web API** yazdın diyelim: `OrderApi`.
+
+#### Docker image nedir?
+
+**Docker image**, uygulamanın "donmuş fotoğrafı / kalıbı" gibi düşün:
+
+* İçinde:
+
+  * Senin kodun,
+  * Gerekli .NET runtime ve kütüphaneler,
+  * OS seviyesinde gereken dosyalar var.
+* **Değişmez (immutable)**: image'in içi çalışırken değiştirilmez.
+* Bir image'den istemediğin kadar **container** üretebilirsin.
+
+Docker dokümanı bunu şöyle özetliyor:
+"Image, container'ı çalıştırmak için gereken tüm dosya ve ayarları içeren standart bir paket."
+
+#### Docker container nedir?
+
+**Container**, image'in **çalışan hali**:
+
+* Image = blueprint / kalıp
+* Container = o kalıptan üretilmiş, çalışan "proses (process)"
+* Yani container, image'in "run etmiş" hali.
+
+Basit diagram:
+
+```text
+Senin yazdığın kod
+        |
+        v
+  [ Docker Image ]
+  (uygulama + runtime + bağımlılıklar)
+
+        |  "çalıştır"
+        v
+  [ Docker Container ]
+  (image'in çalışan hali)
+```
+
+Bir image'den birden çok container açabilirsin:
+
+```text
+             [ OrderApi Image ]
+                 /    |    \
+                /     |     \
+               v      v      v
+        [Container1][Container2][Container3]
+```
+
+---
+
+### 9.2 Tek makine → Bir sürü makine: Node ve Cluster
+
+#### Node nedir?
+
+**Node = İçinde container'ların çalıştığı tek bir makine** (fiziksel veya sanal):
+
+* Üzerinde:
+
+  * Docker / container runtime,
+  * Kubernetes'in küçük ajanları (kubelet, kube-proxy) var.
+
+```text
+[ Node ]
+  - İşletim sistemi (Linux/Windows)
+  - Container runtime (Docker vs)
+  - Kubernetes agent'ları
+  - İçinde çalışan container'lar
+```
+
+#### Cluster nedir?
+
+**Cluster = Birden fazla node'un birleşip tek bir "dev sistem" gibi davranması.**
+
+Resmî tanımlarda şöyle deniyor:
+"Kubernetes cluster, container'lı uygulamaları çalıştırmak için bir araya getirilmiş node'lardan oluşan bir kümedir."
+
+```text
+          Kubernetes CLUSTER
+   +--------------------------------+
+   |   [ Node 1 ]  [ Node 2 ]       |
+   |   [ Node 3 ]  [ Node 4 ]  ...  |
+   +--------------------------------+
+```
+
+Sen, tek tek makine ile uğraşmak yerine:
+
+> "Kubernetes, şuradaki image'den 5 tane çalıştır" diyorsun,
+> O hangi node'da kaç tane açacağına kendi karar veriyor.
+
+---
+
+### 9.3 Kubernetes tam olarak ne yapıyor?
+
+Kubernetes dokümanına göre:
+"Kubernetes, container'lı uygulamaları deploy etmek, scale etmek ve yönetmek için açık kaynak bir orkestrasyon platformudur."
+
+Türkçesi:
+
+> "Ben Docker image'lerimi veriyorum,
+> sen bunları bir sürü makineye dağıt, çalıştır, çoğalt, uçarsa yeniden başlat,
+> dışarıya IP/port işleriyle uğraştırma."
+
+Yani Kubernetes:
+
+* Container'ları **hangi node'a koyacağını** planlıyor,
+* Pod çökerse **yeniden ayağa kaldırıyor**,
+* İstediğin sayıda kopyayı (replica) **sabit tutuyor**,
+* Trafiği kopyalara **paylaştırıyor**,
+* **Scale** (çoğalt/azalt) ve **rolling update / rollback** yapıyor.
+
+Ve tekrar vurgulayayım:
+
+> Kubernetes **bir kütüphane değil**,
+> kendisi başlı başına bir "altyapı sistemi / platform".
+
+---
+
+### 9.4 Kubernetes içindeki temel kavramlar
+
+(hepsini Docker image/container ile bağlayarak)
+
+Şimdi en önemli kısım:
+**Docker tarafı** ile **Kubernetes tarafını** birleştiren kavramlar:
+
+* Pod
+* Replica
+* Scale
+* Deployment
+* Service
+
+#### 9.4.1 Pod = "Docker container'ını taşıyan kutu"
+
+Resmî tanım:
+**Pod, Kubernetes'te yaratabildiğin en küçük birim, 1 veya daha fazla container barındırabilir.**
+
+Basit düşün:
+
+* Genelde **1 Pod = 1 container** (senin `OrderApi` container'ı)
+* Bazen aynı Pod'un içinde yan yana iki container da olabilir (ör: app + log sidecar), ama şimdilik buna takılma.
+
+```text
++--------------------+       +---------------------+
+|       Pod          |       |        Pod         |
+|  (OrderApi Pod #1) |       |  (OrderApi Pod #2) |
+|   +-------------+  |       |  +-------------+   |
+|   | Container   |  |       |  | Container   |   |
+|   | (OrderApi)  |  |       |  | (OrderApi)  |   |
+|   +-------------+  |       |  +-------------+   |
++--------------------+       +---------------------+
+```
+
+Pod'lar **node'ların üzerinde** çalışır:
+
+```text
+        [ Cluster ]
+   +--------------------+
+   |    [ Node 1 ]      |
+   |   +------------+   |
+   |   |  Pod A     |   |
+   |   | (OrderApi) |   |
+   |   +------------+   |
+   |                    |
+   |    [ Node 2 ]      |
+   |   +------------+   |
+   |   |  Pod B     |   |
+   |   | (OrderApi) |   |
+   |   +------------+   |
+   +--------------------+
+```
+
+Burada **OrderApi** Docker image'in, farklı node'larda çalışan Pod'lar içinde container olarak koşuyor.
+
+---
+
+#### 9.4.2 Replica = Aynı Pod'dan birden çok kopya
+
+**Replica = Aynı uygulamanın (aynı image'in) birden fazla çalışan kopyası.**
+
+Neden?
+
+1. **Çok kullanıcıya aynı anda cevap verebilmek için**
+
+   * 1 tane OrderApi kopyası yerine 5 tane olursa,
+   * Gelen HTTP istekleri bu 5 kopyaya dağıtılır,
+   * Her biri daha az yorulur.
+
+2. **Biri ölürse sistem komple çökmesin diye**
+
+   * 1 tane pod'un varsa ve çökerse → servis gider.
+   * 5 pod'dan 1'i çökerse → Kubernetes yenisini açar, diğer 4'ü zaten cevap veriyordur.
+
+3. **Kesintisiz deployment için**
+
+   * Eski image (v1) çalışırken yavaş yavaş yeni image (v2) pod'larını açar,
+   * Eski pod'ları sırayla kapatır (rolling update),
+   * Kullanıcı kesinti hissetmez.
+
+Diagram:
+
+```text
+          OrderApi Image
+                 |
+                 v
+      Kubernetes Deployment diyor ki:
+      "Bu image'den 3 KOPYA (replica) çalışsın"
+
+         +--------- Cluster ---------+
+         |                           |
+         |   [Node1]   [Node2]       |
+         |    Pod#1     Pod#2        |
+         |   (Order)   (Order)       |
+         |             [Node3]       |
+         |              Pod#3        |
+         |             (Order)       |
+         +---------------------------+
+```
+
+---
+
+#### 9.4.3 Scale / Scaling = Kopya sayısını artırıp azaltma
+
+**Scale etmek**, çalışan replica sayısını **artırmak veya azaltmaktır.**
+
+* Scale up / scale out:
+
+  * 3 pod → 10 pod yaparsın
+* Scale down:
+
+  * 10 pod → 2 pod yaparsın
+
+Kubernetes dünyasında:
+
+* Manual scale:
+
+  * "replicas: 3" → "replicas: 6" yaparsın,
+* Otomatik scale:
+
+  * CPU %80 üstü olursa kopya sayısını artır gibi kurallar da yazabilirsin.
+
+Diagram:
+
+```text
+Önce:
+   replicas = 2
+
+   [Pod1] [Pod2]
+
+Scale up (çoğalt):
+   replicas = 5
+
+   [Pod1] [Pod2] [Pod3] [Pod4] [Pod5]
+```
+
+---
+
+#### 9.4.4 Deployment = "Bu uygulamayı nasıl çalıştırmak istiyorsun?" kuralı
+
+Resmî tanım:
+**Deployment, Pod'ları ve ReplicaSet'leri yöneterek uygulamanın istenen sayıda kopyasının çalışmasını sağlar.**
+
+Deployment'ta şunları söylersin:
+
+* Hangi Docker image'i kullanayım?
+* Kaç replica (kopya) çalışsın?
+* Hangi portu dinlesin?
+* Hangi label'ları kullansın?
+
+Kubernetes:
+
+* Bu "istenen durum"u (desired state) okur,
+* Cluster'ın gerçek durumuyla karşılaştırır,
+* Eksik pod varsa açar, fazla varsa siler.
+
+Basit yaml fikir vermesi için (okuman yeter, ezberleme):
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-api
+spec:
+  replicas: 3              # BURASI: scale = 3 kopya
+  selector:
+    matchLabels:
+      app: order-api
+  template:
+    metadata:
+      labels:
+        app: order-api
+    spec:
+      containers:
+        - name: order-api
+          image: myregistry/order-api:1.0.0
+          ports:
+            - containerPort: 8080
+```
+
+Bu dosyayı Kubernetes'e verince (kubectl apply):
+
+* `myregistry/order-api:1.0.0` image'inden
+* 3 tane pod açar (3 replica),
+* Pod çökerse yenisini açar,
+* Sonra `replicas: 5` yaparsan 2 pod daha ekler → **scale up**.
+
+---
+
+#### 9.4.5 Service = Pod'lara erişmek için sabit isim/adres
+
+Sorun: Pod'ların IP adresi **sabit değil**. Pod silinip yaratılınca IP değişebiliyor.
+
+**Service**, bu sorunu çözen katman:
+
+* Arkasında bir grup Pod var (mesela tüm OrderApi Pod'ları),
+* Önünde sabit:
+
+  * Bir DNS ismi (ör: `order-api`),
+  * Bir sanal IP var.
+* Gelen istekleri arkadaki Pod'lara **paylaştırır** (load balancing).
+
+```text
+Kullanıcı / Diğer Servisler
+            |
+            v
+    +--------------------+
+    |  Service           |
+    |  name: order-api   |  --> SABİT ADRES
+    +--------------------+
+        |       |       |
+        v       v       v
+      [Pod1]  [Pod2]  [Pod3]
+      (Order) (Order) (Order)
+```
+
+Sen kodda veya başka servislerde:
+
+```text
+http://order-api
+```
+
+diye çağırırsın, arkadaki Pod sayısı değişse bile (scale up/down) adres değişmez.
+
+---
+
+### 9.5 Tüm resmi birleştirelim: .NET → Docker → Kubernetes
+
+Şimdi baştan sona tek flow çizelim.
+
+#### 1. Sen kod yazarsın
+
+```text
+ASP.NET Core Web API
+(OrderApi)
+```
+
+#### 2. Docker image oluşturursun
+
+```text
+[ OrderApi Image ]
+  - Uygulama kodu
+  - .NET runtime
+  - Bağımlılıklar
+```
+
+#### 3. Kubernetes cluster'ında Deployment tanımlarsın
+
+```text
+Deployment (order-api)
+  - image: orderapi:1.0.0
+  - replicas: 3
+```
+
+#### 4. Kubernetes, cluster'da Pod'ları dağıtır
+
+```text
+               [ Kubernetes Cluster ]
++------------------------------------------------+
+|   [ Node1 ]           [ Node2 ]                |
+|   +--------+          +--------+              |
+|   | Pod#1  |          | Pod#3  |              |
+|   |Order   |          |Order   |              |
+|   +--------+          +--------+              |
+|               [ Node3 ]                       |
+|               +--------+                      |
+|               | Pod#2 |                       |
+|               | Order |                       |
+|               +--------+                      |
++------------------------------------------------+
+```
+
+Her Pod'un içinde **OrderApi container'ı** aynı Docker image'den çalışıyor.
+
+#### 5. Service ile dışarıya veya diğer servislere açarsın
+
+```text
+Kullanıcı / Frontend / Diğer mikroservisler
+                    |
+                    v
+           +--------------------+
+           | Service            |
+           | name: order-api    |
+           +--------------------+
+                |      |      |
+                v      v      v
+              Pod#1  Pod#2  Pod#3
+```
+
+Trafik dengelenir; Pod sayısını artırıp azaltman (scale) sadece Deployment'taki `replicas` sayısını değiştirmene bakar.
+
+---
+
+### 9.6 .NETçi biri olarak bunu nerede kullanıyorsun?
+
+Microsoft'un resmi microservices rehberi ve eğitimleri özellikle şunu anlatıyor:
+
+* Her .NET mikroservisini (Order, Basket, Payment…) **Docker image** yap,
+* Hepsini Kubernetes'e **Deployment + Service** olarak koy,
+* Redis, RabbitMQ gibi yan sistemleri de container olarak veya managed servis olarak kullan,
+* Kubernetes:
+
+  * scaling,
+  * health check,
+  * rolling update,
+  * servis keşfi işlerini senin yerine halletsin.
+
