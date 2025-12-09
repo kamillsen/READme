@@ -7,7 +7,7 @@
 
 4) Interface ve Abstract class farkı , neden varlar, hangi ihtiyaçtan dolayı yazılımcılar bunu üretmiş ?
 
-5) Node.js nedir ? Node.js Developer ne yapar ? Node.js nasıl yazılır ? .Net üzerinden örnek ver ? c# -> .net gibi.
+5) Node.js nedir ? Node.js server mı clinet tarafında mı çalışır ? Node.js express nedir ? Node.js Developer ne yapar ? Node.js nasıl yazılır ? .Net üzerinden örnek ver ? c# -> .net gibi.
 
 6) public class Dog : Animal
 Mirasın tanımlandığı yer burası.
@@ -38,4 +38,40 @@ Bunları diyor ama compiler time nedir ? Başka Hangi time (aşama) var kod çal
         burda constructor metotat interface'i parametre olarak vermek garibime gidiyor. Nasıl böyle bir şey olabilir ? Arka planda nasıl bir kod var ?
 
 
-13) 
+13) Code First ? 
+
+
+14) Object’ten miras – “Her class’ın dedesi”
+
+C#’ta yazdığın her class aslında:
+
+class Dog : object
+{
+}
+
+
+gibi kabul edilir.
+
+Yani:
+
+Her sınıf object’ten miras alır.
+
+Bu yüzden her nesnede şunlar vardır:
+
+ToString()
+
+Equals(object obj)
+
+GetHashCode()
+
+GetType()
+
+En çok gördüğün: ToString().
+
+
+
+15) Cloudflare nedir ?
+
+16) Http protokol mantığı ?
+
+17) Kubernet nedir ?

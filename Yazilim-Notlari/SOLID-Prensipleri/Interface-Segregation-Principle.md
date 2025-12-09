@@ -164,3 +164,7 @@ Hazırsan son prensip olan
 için aynı şekilde devam edebilirim.
 
 
+
+
+
+
