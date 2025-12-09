@@ -581,3 +581,4 @@ public class Program
   Eşitlik içerik bazlı, `with` ile kopyalama, kolay immutability.
 
 
+

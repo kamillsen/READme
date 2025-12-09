@@ -284,3 +284,4 @@ public struct Rectangle : IDrawable
 * Bu seçim, bellek yönetimi ve performans açısından kritiktir.
 
 
+

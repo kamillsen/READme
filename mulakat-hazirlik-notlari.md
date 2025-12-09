@@ -592,7 +592,7 @@
   - Routing key mantığı
   - Producer / Consumer kavramları
 
-- ✅ **Redis**
+- ✅ **Redis** TAMAM
   - In-memory cache olarak kullanım
   - Key-value store mantığı
   - Session management
@@ -632,7 +632,7 @@
   - Basit bir pipeline'da neler olur:
     - Test → Build → Docker Image → Deploy
 
-- ✅ **Docker**
+- ✅ **Docker** TAMAM
   - Image, container, Dockerfile mantığı
   - Docker Compose ile çoklu servis ayağa kaldırma
   - Container vs Virtual Machine farkı
