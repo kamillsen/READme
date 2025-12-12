@@ -117,19 +117,19 @@
 
 ### Neleri Çalışmalısın?
 
-- ✅ **SQL Temel Sorgular**
+- ✅ **SQL Temel Sorgular** TAMAM
   - SELECT
   - INSERT
   - UPDATE
   - DELETE
 
-- ✅ **JOIN Türleri**
+- ✅ **JOIN Türleri** TAMAM
   - INNER JOIN
   - LEFT JOIN
   - RIGHT JOIN
   - FULL OUTER JOIN
 
-- ✅ **Normalizasyon & Denormalizasyon**
+- ✅ **Normalizasyon & Denormalizasyon** TAMAM
   - 1NF (First Normal Form)
   - 2NF (Second Normal Form)
   - 3NF (Third Normal Form)
@@ -146,10 +146,6 @@
   - Isolation
   - Durability
 
-- ✅ **MSSQL & PostgreSQL Farkına Genel Bakış**
-  - Syntax farkları
-  - Özellik karşılaştırması
-  - Kullanım senaryoları
 
 - ✅ **SQL Model Tasarımı**
   - Tablolar
@@ -205,7 +201,7 @@
   - Model binding
   
 
-- ✅ **REST API Tasarımı**
+- ✅ **REST API Tasarımı** TAMAM
   - Resource kavramı
   - Endpoint tasarımı
   - HTTP Status Code mantığı
@@ -386,39 +382,63 @@
 ### Neleri Çalışmalısın?
 
 - ✅ **React Component Yapısı**
-  - Function component
-  - JSX syntax
-  - Component composition
+  - Function component (modern yaklaşım): `function MyComponent() { return <div>...</div> }`
+  - JSX syntax: HTML benzeri ama JavaScript içinde, `{}` ile JS ifadeleri yazılır
+  - Component composition: Küçük bileşenleri birleştirerek büyük UI'ler oluşturma
+  - `children` kullanımı (örn: `<Card><Content /></Card>`)
 
 - ✅ **React Hooks**
   - `useState` - State yönetimi
-  - `useEffect` - Side effects
-  - `useContext` - Context API
-  - Custom hook mantığı
+  - `useEffect` - Side effects (API istekleri, event dinleme)
+  - `useContext` - Global veri paylaşımı (theme, auth, language)
+  - `useMemo` - Hesaplanan değeri cache'leme (performans optimizasyonu)
+  - `useCallback` - Fonksiyonu yeniden tanımlamayı engelleme (performans optimizasyonu)
+  - Custom hooks - Tekrarlayan mantığı modüler hale getirme (`useForm`, `useAuth` gibi)
 
 - ✅ **Props ve State Yönetimi**
-  - Props drilling
-  - State lifting
-  - Unidirectional data flow
+  - Props → Üstten alta veri aktarma (parent → child)
+  - State → Component içi veri durumu
+  - Unidirectional data flow → Veriler yukarıdan aşağı akar, değişiklikler callback ile yukarı iletilir
+  - Props drilling → Fazla derin prop geçişinden kaçınmak için Context kullanılır
+  - State lifting → State'i yukarı taşıma, shared state pattern
 
-- ✅ **Lifting State Up**
-  - State'i yukarı taşıma
-  - Shared state pattern
+- ✅ **Form Yönetimi & Validasyon**
+  - Controlled component: Input'un değeri state'ten gelir (`value={state}` + `onChange`)
+  - Uncontrolled component: DOM üzerinden `ref` ile değer okunur
+  - Form validasyon yöntemleri:
+    - Manuel validasyon (`if (!email.includes('@'))`)
+    - Kütüphane ile: React Hook Form, Formik, Zod, Yup gibi
 
-- ✅ **Form Yönetimi**
-  - Controlled input
-  - Uncontrolled input
-  - Form validation
-
-- ✅ **Routing**
-  - React Router mantığı
-  - Route parameters
+- ✅ **Routing – React Router**
+  - React Router v6 kullanımı: `<BrowserRouter>`, `<Routes>`, `<Route path="/about" element={<About />} />`
+  - Dinamik route parametreleri: `/users/:id` → `useParams()` ile `id` okunur
+  - Link ile sayfa geçişi: `<Link to="/about">About</Link>`
+  - Protected routes (gizli sayfalar): Kullanıcı login değilse `<Navigate to="/login" />` ile yönlendirme
   - Navigation guards
 
-- ✅ **Basit State Management**
-  - Context API
-  - useReducer
-  - Global state patterns
+- ✅ **API Entegrasyonu**
+  - `useEffect` + `fetch` veya `axios` ile veri çekme
+  - Loading / error state yönetimi
+  - State'e veri kaydetme ve UI'a yansıtma
+  - Örnek: Kullanıcı listesini çekip listeleme
+
+- ✅ **Performans Optimizasyonu**
+  - Memoization: `useMemo` ile hesaplanan değeri cache'leme, `useCallback` ile fonksiyon yeniden tanımlamayı engelleme
+  - Virtual DOM ve re-render yönetimi: Gereksiz re-render'ı engellemek için `React.memo`, `key` kullanımı
+  - Lazy loading & code splitting: `React.lazy()` + `Suspense` ile sayfaları parça parça yükleme
+
+- ✅ **Global State Management**
+  - Context API: `createContext()` → `Provider` ile değer paylaş, `useContext()` ile kullan
+  - `useReducer`: Karmaşık state yapılarında `dispatch` & `reducer` mantığı (Redux benzeri)
+  - Context + Reducer kombinasyonu: Global yönetim ihtiyacına çözüm (`AppContext` + `AppReducer`)
+  - Alternatif state yönetimi kütüphaneleri: Zustand, Recoil
+
+- ✅ **İleri Seviye Konular (Araştırılması Gerekenler)**
+  - React Hook Form / Formik (gelişmiş form yönetimi)
+  - Zod / Yup (schema tabanlı validasyon)
+  - React Query / SWR (data fetching ve caching optimizasyonları)
+  - Testing (Jest, React Testing Library) - UI testleri ve component güvenilirliği
+  - Next.js (React tabanlı SSR destekli framework)
 
 ---
 
@@ -427,52 +447,92 @@
 ### Neleri Çalışmalısın?
 
 - ✅ **Vue 3 Temel Kavramlar**
+  - Single File Component (SFC) yapısı: `template`, `script`, `style`
   - Component yapısı
-  - Props
-  - Emits
-  - Lifecycle hooks
+  - Parent-child ilişkisi mantığı
+  - Props ile üstten alta veri geçirme
+  - Emits ile alttan üste event gönderme
+  - Lifecycle hooks (`onMounted`, `onUpdated`, `onUnmounted` vb.)
+  - Ne zaman API çağrısı yapmalı, neyi nerede başlatmalı?
 
 - ✅ **Composition API**
-  - `setup()` function
-  - `ref()` ve `reactive()`
-  - `computed()`
-  - `watch()`
+  - `setup()` fonksiyonunun mantığı
+  - `ref()` ve `reactive()` ile reaktif state tutma
+  - `computed()` ile türetilmiş değerler
+  - `watch()` / `watchEffect()` ile değişiklikleri izleme
+  - Composable yapılar (tekrarlayan mantığı ayrı dosyalara bölmek)
+  - Örnek composable'lar: `useAuth()`, `useForm()`
+  - Büyük komponentleri parçalayıp daha okunabilir hale getirme
 
 - ✅ **Options API vs Composition API**
+  - Options API: `data`, `methods`, `computed`, `watch` blokları
+  - Küçük / orta projelerde hızlı ve anlaşılır yapı
+  - Composition API: Mantığı "özellik bazlı" gruplama (auth, filtreler, pagination vb.)
+  - Büyük projelerde okunabilirlik ve tekrar kullanılabilirlik
   - Farklar ve kullanım senaryoları
-  - Migration stratejisi
+  - Migration stratejisi: Vue 2 → Vue 3 veya Options → Composition geçişi
+  - Önce yeni yazılanlarda Composition kullanmak, zamanla eski bileşenleri parça parça dönüştürmek
+
+- ✅ **Vue Router (Yönlendirme)**
+  - Route tanımlama (path → component eşlemesi)
+  - Dinamik route'lar: `/users/:id`
+  - Nested (iç içe) route'lar
+  - Lazy-loaded route'lar (code splitting için)
+  - Guard'lar: Global guard (`beforeEach`), Route bazlı guard (`beforeEnter`)
+  - Auth kontrolü, yetkisiz kullanıcıyı login sayfasına atma
 
 - ✅ **Pinia ile Global State Management**
-  - Store tanımlama
-  - State, getters, actions
-  - DevTools entegrasyonu
+  - Store mantığı: `defineStore()` ile store tanımlama
+  - `state` → global reaktif veri
+  - `getters` → hesaplanmış global değerler
+  - `actions` → async işlemler, API çağrıları
+  - Kullanım senaryoları: Auth bilgisi (kullanıcı, token), filtreler, sepet, tema ayarları vb.
+  - DevTools entegrasyonu: State değişimlerini izleme, hangi action çağrılmış görme
 
 - ✅ **Nuxt 3/4 ile SSR & Routing**
+  - Project yapısı: `pages/` → otomatik routing, `layouts/` → ortak layout'lar (admin, public, auth vb.), `middleware/` → route bazlı kontrol
   - Pages yapısı
   - Layouts
-  - Middleware mantığı
+  - Middleware mantığı (auth kontrolü, yetkilendirme)
   - Server-side rendering ve SEO
+  - Meta tag / title / description ayarlama
+  - SEO için SSR'in neden önemli olduğu
+
+- ✅ **Nuxt'ta Veri Yönetimi & API Entegrasyonu**
+  - Data fetch stratejileri: `useFetch`, `useAsyncData` ile server-side data fetch
+  - Sadece client'ta çalışan istekler (browser-only şeyler)
+  - API katmanı: `/server/api` altında endpoint yazma (Nuxt server routes)
+  - Frontend tarafında bu endpoint'leri tüketme
+  - Caching & reuse: Aynı veriyi tekrar tekrar çekmemek için cache stratejisi
+  - Pinia + Nuxt kombinasyonu (global state + SSR)
 
 - ✅ **Form Validasyonu**
+  - Temel validasyon mantığı: Required / min-max / pattern gibi kontroller
+  - Submit öncesi senaryo ve hata mesajları
+  - Şema bazlı validasyon (Zod vb.): `z.object({ ... })` ile şema oluşturma
   - Zod entegrasyonu
-  - Şema bazlı validation
-  - Error handling
+  - Form datasını şemaya göre validate etme
+  - `safeParse` ile hata yakalama ve hata mesajı gösterme
+  - Error handling: Field bazlı hata göstermek (input altında), global error mesajları
 
-- ✅ **Syncfusion Vue Bileşenleri**
-  - Grid component
-  - Image editor
-  - Component entegrasyonu
+- ✅ **UI Component Kütüphaneleri**
+  - Ücretsiz ve açık kaynak Vue UI kütüphaneleri (Vuetify, Quasar, PrimeVue, Element Plus vb.)
+  - Grid/DataTable component: Sayfalama, sıralama, filtreleme, büyük veri kümelerinde performanslı listeleme
+  - Component entegrasyonu ve özelleştirme
+  - Genel UI mantığı: Form bileşenleri, modallar, tablar, grafikler
+  - Kendi reusable component'lerini yazma
 
 - ✅ **Büyük Data Setlerinde Performans**
-  - Server-side pagination
-  - Filtering
-  - Sorting
-  - Virtual scrolling
+  - Server-side pagination: API'dan sayfa sayfa veri çekme, page, pageSize, sort, filter parametreleriyle çalışma
+  - Filtering & sorting: Sunucu tarafında filtre/sort
+  - Input'a `debounce` ekleyerek gereksiz istekleri azaltma
+  - Virtual scrolling: Sadece ekranda görünen item'ların render edilmesi, uzun listelerde FPS ve UX'i koruma
 
 - ✅ **Tailwind CSS ile Component Tasarımı**
-  - Utility-first CSS
-  - Responsive design
-  - Custom components
+  - Utility-first yaklaşımı: `flex`, `grid`, `p-4`, `mt-2`, `text-sm` gibi sınıflarla stil verme
+  - Responsive design: `sm:`, `md:`, `lg:` prefix'leriyle breakpoint bazlı tasarım
+  - Custom components: Sık kullanılan kombinasyonlardan kendi UI component'lerini oluşturma
+  - Design system mantığı: buton, kart, input, modal gibi ortak parçalar
 
 ---
 
@@ -586,7 +646,7 @@
 
 ### Neleri Çalışmalısın?
 
-- ✅ **RabbitMQ**
+- ✅ **RabbitMQ** TAMAM
   - Queue kavramı
   - Exchange types
   - Routing key mantığı
