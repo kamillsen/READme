@@ -310,3 +310,5 @@ Kısaca birkaç alternatif:
 * Farklı teknolojiler (C#, Java, Node, Python, Go…) **aynı protokolle konuşuyor**.
 * Mikroservis mimarilerinde servislerin **birbirleriyle haberleşmesini** kolaylaştırıyor.
 
+
+

@@ -11,7 +11,7 @@
 3. [Veritabanı, SQL Modelleme & ORM](#3-veritabanı-sql-modelleme--orm)
 4. [C# / .NET Backend](#4-c--net-backend)
 5. [Python / FastAPI & Real-Time](#5-python--fastapi--real-time)
-6. [Frontend – Genel JS / TS](#6-frontend--genel-js--ts)
+6. [JavaScript Ekosistemi & Node.js](#6-javascript-ekosistemi--nodejs)
 7. [Frontend – React](#7-frontend--react)
 8. [Frontend – Vue 3 / Nuxt 3–4](#8-frontend--vue-3--nuxt-34)
 9. [Frontend – Angular](#9-frontend--angular)
@@ -339,7 +339,7 @@
 
 ---
 
-## 6. FRONTEND – GENEL JS / TS
+## 6. JAVASCRIPT EKOSİSTEMİ & NODE.JS
 
 ### Neleri Çalışmalısın?
 
@@ -348,17 +348,20 @@
   - Closure
   - `this` keyword
   - Event loop
+  - Callback, Promise, Async/Await
 
 - ✅ **TypeScript**
   - Type system
   - Interface vs Type
   - Generics
   - Utility types
+  - Type inference
 
 - ✅ **Promise / Async-Await**
   - Promise chain
   - Async/await syntax
   - Error handling
+  - Promise.all(), Promise.race()
 
 - ✅ **DOM ve Virtual DOM Mantığı**
   - DOM manipulation
@@ -374,6 +377,27 @@
   - React/Vue/Angular ortak mantığı
   - Component lifecycle
   - Props ve state
+
+- ✅ **JavaScript Ekosistemi İlişkileri**
+  - **JavaScript** → Temel programlama dili (hem browser'da hem Node.js'te çalışır)
+  - **Node.js** → JavaScript'i sunucu tarafında çalıştıran runtime (backend için)
+  - **Next.js** → React framework'ü (SSR, SSG, routing, API routes dahil)
+  - **Nuxt.js** → Vue framework'ü (SSR, SSG, routing, server routes dahil)
+  - İlişki: JavaScript → Node.js (backend), JavaScript → React/Vue (frontend), React → Next.js, Vue → Nuxt.js
+  - Full-stack JavaScript: Aynı dili hem frontend hem backend'de kullanma
+
+- ✅ **Node.js Backend Geliştirme**
+  - Node.js runtime ve V8 engine
+  - NPM (Node Package Manager) kullanımı
+  - CommonJS vs ES Modules
+  - File system işlemleri (`fs` module)
+  - HTTP server oluşturma (native `http` veya Express.js)
+  - Express.js framework temelleri
+  - Middleware kavramı
+  - RESTful API oluşturma
+  - Environment variables (`.env` dosyası)
+  - Error handling ve async hata yakalama
+  - Package.json ve dependency yönetimi
 
 ---
 
@@ -433,12 +457,26 @@
   - Context + Reducer kombinasyonu: Global yönetim ihtiyacına çözüm (`AppContext` + `AppReducer`)
   - Alternatif state yönetimi kütüphaneleri: Zustand, Recoil
 
+- ✅ **Next.js (React Framework)**
+  - Next.js nedir: React tabanlı full-stack framework
+  - SSR (Server-Side Rendering) ve SSG (Static Site Generation)
+  - Pages Router vs App Router (Next.js 13+)
+  - File-based routing: `pages/` klasörü yapısı
+  - API Routes: `/pages/api` veya `/app/api` altında backend endpoint'leri yazma
+  - `getServerSideProps`, `getStaticProps`, `getStaticPaths` (Pages Router)
+  - `useRouter` hook ile routing
+  - Image optimization (`next/image`)
+  - Automatic code splitting
+  - Built-in CSS support (CSS Modules, styled-jsx)
+  - Middleware ile request interception
+  - Environment variables ve config
+  - Deployment (Vercel, Docker vb.)
+
 - ✅ **İleri Seviye Konular (Araştırılması Gerekenler)**
   - React Hook Form / Formik (gelişmiş form yönetimi)
   - Zod / Yup (schema tabanlı validasyon)
   - React Query / SWR (data fetching ve caching optimizasyonları)
   - Testing (Jest, React Testing Library) - UI testleri ve component güvenilirliği
-  - Next.js (React tabanlı SSR destekli framework)
 
 ---
 
@@ -489,14 +527,19 @@
   - Kullanım senaryoları: Auth bilgisi (kullanıcı, token), filtreler, sepet, tema ayarları vb.
   - DevTools entegrasyonu: State değişimlerini izleme, hangi action çağrılmış görme
 
-- ✅ **Nuxt 3/4 ile SSR & Routing**
+- ✅ **Nuxt.js (Vue Framework)**
+  - Nuxt.js nedir: Vue tabanlı full-stack framework
   - Project yapısı: `pages/` → otomatik routing, `layouts/` → ortak layout'lar (admin, public, auth vb.), `middleware/` → route bazlı kontrol
-  - Pages yapısı
-  - Layouts
+  - Pages yapısı ve file-based routing
+  - Layouts: Ortak layout yapıları (`default.vue`, `admin.vue` vb.)
   - Middleware mantığı (auth kontrolü, yetkilendirme)
+  - Server-side rendering (SSR) ve Static Site Generation (SSG)
   - Server-side rendering ve SEO
-  - Meta tag / title / description ayarlama
+  - Meta tag / title / description ayarlama (`useHead`, `useSeoMeta`)
   - SEO için SSR'in neden önemli olduğu
+  - Server Routes: `/server/api` altında backend endpoint'leri yazma
+  - Auto-imports: Composables, utilities otomatik import
+  - Nuxt Modules ve plugin sistemi
 
 - ✅ **Nuxt'ta Veri Yönetimi & API Entegrasyonu**
   - Data fetch stratejileri: `useFetch`, `useAsyncData` ile server-side data fetch
