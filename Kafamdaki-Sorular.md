@@ -34,7 +34,6 @@ Bunları diyor ama compiler time nedir ? Başka Hangi time (aşama) var kod çal
             _basketService = basketService;
             _loginService = loginService;
         } 
-
         burda constructor metotat interface'i parametre olarak vermek garibime gidiyor. Nasıl böyle bir şey olabilir ? Arka planda nasıl bir kod var ?
 
 
@@ -75,3 +74,29 @@ En çok gördüğün: ToString().
 16) Http protokol mantığı ?
 
 17) Kubernet nedir ?
+
+18) Kubernetes
+
+Docker
+
+Datadog
+
+GitLab
+
+Kafka
+
+Prometheus
+
+İstersen bunların ne işe yaradığını veya mikroservis mimarisindeki rollerini de açıklayabilirim.
+
+
+19) DDD ?
+20) Rest API ?
+
+21)  Elasticsearch ile çalıştım
+💬 Kafka gibi message brokerlar ile deneyimim var
+
+
+22) Program.cs kullanımı yaprısı içindekiler vs
+
+23) 
