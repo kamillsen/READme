@@ -746,9 +746,7 @@ Mesela bir dashboard düşün:
 >
 > Adı, Bölümü, Fakültesi, Aldığı ders sayısı"
 
-Bu bilgiyi almak için SQL'de:
-
-* `Ogrenciler`
+Bu bilgiyi almak için SQL'de:* `Ogrenciler`
 * `Bolumler`
 * `OgrenciDers`
 

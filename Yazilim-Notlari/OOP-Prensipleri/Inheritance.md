@@ -612,6 +612,4 @@ Console.WriteLine(dog.ToString()); // "Dog: Karabas"
 
 * `virtual` yoksa `override` YOK; ancak `new` ile gizleyebilirsin.
 
-* `override` → gerçek nesne tipine göre, `new` → referans tipine göre çalıştırır.
-
-* Her class `object`'ten miras alır; bu yüzden her nesnede `ToString()` vb. metotlar hazır gelir.
+* `override` → gerçek nesne tipine göre, `new` → referans tipine göre çalıştırır.* Her class `object`'ten miras alır; bu yüzden her nesnede `ToString()` vb. metotlar hazır gelir.

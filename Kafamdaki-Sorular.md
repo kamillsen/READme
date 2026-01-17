@@ -99,4 +99,4 @@ Prometheus
 
 22) Program.cs kullanımı yaprısı içindekiler vs
 
-23) 
+23) DI Container mantığı? 
