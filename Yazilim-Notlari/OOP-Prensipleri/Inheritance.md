@@ -222,28 +222,228 @@ public class Dog : Animal
 
 ---
 
-## 7️⃣ Static Üyeler (Kısaca)
+### 📌 Metot Dışında Erişim
 
-* `static` üyeler **türetilmiş sınıflarca da görülebilir**, ama:
-
-  * Nesneye değil, **tipin kendisine** aittir.
-
-  * Polymorphism'le ilgili değildir (override edilemez).
+Üst sınıftaki field'lara **metot dışında** da erişebilirsin:
 
 ```csharp
 public class Animal
 {
-    public static int Count;
+    public int Age = 10;
+    protected string Name = "Hayvan";
 }
 
 public class Dog : Animal
 {
+    // ✅ Field initialization'da
+    public int DogAge = Age;  // Age = 10
+    
+    // ✅ Property'de
+    public string DogName => Name;
+    
+    // ✅ Constructor'da
+    public Dog()
+    {
+        Age = 5;  // ✅ Çalışır
+    }
+    
+    // ✅ Metot içinde (zaten biliyoruz)
+    public void Test()
+    {
+        Age = 7;  // ✅ Çalışır
+    }
+}
+```
+
+**Özet:** `public` ve `protected` field'lara metot dışında (field initialization, property, constructor) da erişebilirsin. `private` field'lara hiçbir şekilde erişemezsin.
+
+---
+
+## 7️⃣ Static Üyeler ve Miras
+
+### 🔹 Static Nedir?
+
+**Static** = Nesneye değil, **sınıfın kendisine** ait olan üye.
+
+**Fark:**
+* **Instance (normal) üye:** Her nesnenin kendi kopyası var
+* **Static üye:** Tüm nesneler **aynı değeri** paylaşır
+
+### 🔹 Basit Örnek: Instance vs Static
+
+```csharp
+public class Animal
+{
+    // Instance field (her nesnenin kendi kopyası)
+    public int Age = 5;
+    
+    // Static field (tüm nesneler aynı değeri paylaşır)
+    public static int TotalCount = 0;
 }
 
-Animal.Count = 5;
-Dog.Count = 10;
-Console.WriteLine(Animal.Count); // 10 (aynı değer)
+// Kullanım
+var dog1 = new Animal();
+var dog2 = new Animal();
+
+dog1.Age = 10;  // Sadece dog1'in Age'i değişir
+dog2.Age = 20;  // Sadece dog2'nin Age'i değişir
+
+Animal.TotalCount = 5;  // Tüm nesneler için aynı değer
+Console.WriteLine(dog1.Age);        // 10
+Console.WriteLine(dog2.Age);        // 20
+Console.WriteLine(Animal.TotalCount); // 5 (her ikisi için de)
 ```
+
+**Açıklama:**
+* `Age` → Her nesnenin kendi değeri var (dog1.Age ≠ dog2.Age)
+* `TotalCount` → Tüm nesneler aynı değeri paylaşır (Animal.TotalCount)
+
+---
+
+### 🔹 Static ve Miras İlişkisi
+
+**Önemli:** Static üyeler **miras alınır**, ama **aynı static üyeyi** paylaşırlar.
+
+```csharp
+public class Animal
+{
+    public static int Count = 0;  // Static field
+}
+
+public class Dog : Animal
+{
+    // Dog, Animal'dan Count'u miras alır
+}
+
+// Kullanım
+Animal.Count = 5;
+Dog.Count = 10;  // Aynı static field'a yazıyor!
+
+Console.WriteLine(Animal.Count); // 10 (aynı değer!)
+Console.WriteLine(Dog.Count);     // 10 (aynı değer!)
+```
+
+**Açıklama:**
+* `Animal.Count` ve `Dog.Count` → **Aynı static field'ı** gösterir
+* Biri değişince diğeri de değişir (çünkü aynı değer)
+* `Dog` sınıfı `Count`'u **miras alır**, ama **yeni bir static field oluşturmaz**
+
+---
+
+### 🔹 Static Metot ve Miras
+
+```csharp
+public class Animal
+{
+    public static void ShowInfo()
+    {
+        Console.WriteLine("Animal bilgisi");
+    }
+}
+
+public class Dog : Animal
+{
+    // Dog, Animal'dan ShowInfo()'yu miras alır
+}
+
+// Kullanım
+Animal.ShowInfo();  // "Animal bilgisi"
+Dog.ShowInfo();     // "Animal bilgisi" (aynı metot)
+```
+
+**Önemli:** Static metotlar **override edilemez** (polymorphism yok).
+
+```csharp
+public class Animal
+{
+    public static void Speak()
+    {
+        Console.WriteLine("Animal speak");
+    }
+}
+
+public class Dog : Animal
+{
+    // ❌ Override edemezsin (static metotlar override edilemez)
+    // public static override void Speak() { }  // Derleme hatası!
+    
+    // ✅ Ama yeni bir static metot yazabilirsin (gizleme)
+    public static new void Speak()
+    {
+        Console.WriteLine("Dog bark");
+    }
+}
+
+// Kullanım
+Animal.Speak();  // "Animal speak"
+Dog.Speak();     // "Dog bark" (yeni metot, override değil)
+```
+
+---
+
+### 🔹 Pratik Örnek: Nesne Sayacı
+
+```csharp
+public class Animal
+{
+    public static int TotalCount = 0;  // Tüm hayvanlar için ortak sayaç
+    
+    public string Name { get; set; }
+    
+    public Animal(string name)
+    {
+        Name = name;
+        TotalCount++;  // Her yeni hayvan oluşturulduğunda artar
+    }
+}
+
+public class Dog : Animal
+{
+    public Dog(string name) : base(name)
+    {
+        // TotalCount zaten Animal'da artırıldı
+    }
+}
+
+public class Cat : Animal
+{
+    public Cat(string name) : base(name)
+    {
+        // TotalCount zaten Animal'da artırıldı
+    }
+}
+
+// Kullanım
+var dog1 = new Dog("Karabaş");
+var dog2 = new Dog("Çomar");
+var cat1 = new Cat("Mırmır");
+
+Console.WriteLine(Animal.TotalCount);  // 3 (tüm hayvanlar)
+Console.WriteLine(Dog.TotalCount);     // 3 (aynı değer)
+Console.WriteLine(Cat.TotalCount);     // 3 (aynı değer)
+```
+
+**Açıklama:**
+* `TotalCount` → Tüm hayvanlar için ortak sayaç
+* `Dog`, `Cat` → Hepsi aynı `TotalCount`'u paylaşır
+* Yeni hayvan oluşturulduğunda hepsi için aynı değer artar
+
+---
+
+### 🔹 Özet: Static ve Miras
+
+| Özellik | Açıklama |
+|---------|----------|
+| **Miras alınır mı?** | ✅ Evet, static üyeler miras alınır |
+| **Aynı mı?** | ✅ Evet, `Animal.Count` ve `Dog.Count` aynı değeri gösterir |
+| **Override edilebilir mi?** | ❌ Hayır, static metotlar override edilemez |
+| **Polymorphism var mı?** | ❌ Hayır, static üyeler polymorphism'e dahil değil |
+| **Nesneye mi, sınıfa mı ait?** | Sınıfa ait (nesneye değil) |
+
+**Kısaca:**
+* Static üyeler **miras alınır** ve **aynı değeri paylaşırlar**
+* `Animal.Count` ve `Dog.Count` → **Aynı static field**
+* Static metotlar **override edilemez**, ama **yeni static metot** yazılabilir (`new` ile)
 
 ---
 
