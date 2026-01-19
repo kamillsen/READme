@@ -106,9 +106,9 @@ public Dog(string name) : base(name)
 
 Base sınıftaki:
 
-* field'lar
-* property'ler
-* metotlar
+* field'lar → `public string name;`
+* property'ler → `public int Age { get; set; }`
+* metotlar → `public void Eat() { }`
 
 → Hepsi nesnenin parçası olur, türeyen sınıf bunları kullanabilir (erişim seviyesine bağlı).
 
@@ -193,6 +193,7 @@ public class Program
 
 * Nesnenin içinde **var**, miras alınıyor (state olarak),
 * Ama **sadece tanımlandığı sınıfın içinden erişilir**.
+* Türeyen sınıftan **hiçbir şekilde erişilemez** (ne doğrudan ne de metot içinde).
 
 ```csharp
 public class Animal
@@ -201,7 +202,7 @@ public class Animal
 
     public void ShowSecret()
     {
-        Console.WriteLine(_secret); // ✅ erişebilir
+        Console.WriteLine(_secret); // ✅ erişebilir (Animal sınıfı içinde)
     }
 }
 
@@ -209,12 +210,15 @@ public class Dog : Animal
 {
     public void Test()
     {
-        // _secret = 10; // ❌ erişemez (private)
+        // _secret = 10;        // ❌ erişemez (private - doğrudan erişim)
+        // Console.WriteLine(_secret); // ❌ erişemez (private - metot içinde de erişilemez)
+        
+        ShowSecret(); // ✅ erişebilir (public metot üzerinden)
     }
 }
 ```
 
-> Özet: `private` → "miras **var** ama erişim **yok**".
+> Özet: `private` → "miras **var** ama erişim **yok**". Türeyen sınıftan ne doğrudan ne de metot içinde erişilebilir. Sadece base sınıfın public/protected metotları üzerinden erişilebilir.
 
 ---
 
@@ -612,4 +616,10 @@ Console.WriteLine(dog.ToString()); // "Dog: Karabas"
 
 * `virtual` yoksa `override` YOK; ancak `new` ile gizleyebilirsin.
 
-* `override` → gerçek nesne tipine göre, `new` → referans tipine göre çalıştırır.* Her class `object`'ten miras alır; bu yüzden her nesnede `ToString()` vb. metotlar hazır gelir.
+* `override` → gerçek nesne tipine göre, `new` → referans tipine göre çalıştırır.
+
+* Her class `object`'ten miras alır; bu yüzden her nesnede `ToString()` vb. metotlar hazır gelir.
+
+---
+
+> **Not:** Interface konusu için ayrı bir dosya oluşturuldu: `Interface.md`

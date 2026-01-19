@@ -16,6 +16,46 @@ public interface IAnimal
 
 * Interface'te **gövdesiz** method → implement eden sınıf **YAZMAK ZORUNDA** ✅
 * Interface'te **gövdesi olan** method (C# 8+) → implement eden sınıf **yazmak zorunda DEĞİL** (opsiyonel)
+* **Instance field içermez** (C# 8+ ile property içerebilir, C# 11+ ile static field içerebilir)
+
+**Property Örneği:**
+
+```csharp
+public interface IAnimal
+{
+    // ✅ Property olabilir (C# 8+)
+    string Name { get; set; }  // "Name property'si olmalı" sözleşmesi
+    
+    // ✅ Read-only property
+    int Age { get; }  // "Age property'si olmalı (read-only)" sözleşmesi
+    
+    // ❌ Instance field olamaz
+    // int age;  // Derleme hatası!
+    
+    void Speak();
+}
+
+// Implement eden sınıf
+public class Dog : IAnimal
+{
+    // ✅ Auto-implemented property
+    public string Name { get; set; }
+    
+    // ✅ Read-only property
+    public int Age { get; }
+    
+    public Dog(string name, int age)
+    {
+        Name = name;
+        Age = age;  // Constructor'da set edilebilir
+    }
+    
+    public void Speak()
+    {
+        Console.WriteLine($"{Name} havladı!");
+    }
+}
+```
 
 **Örnek:**
 
@@ -342,19 +382,160 @@ public class FileLogger : ILogger
 
 ---
 
-## 7️⃣ Özet: Abstract Class vs Interface
+## 7️⃣ Akraba Olmak Zorunda mı? (İlişki Türü)
+
+### Interface: Akraba Olmak Zorunda Değil
+
+**Interface implement eden sınıflar akraba olmak zorunda değil.** Farklı hiyerarşilerden sınıflar aynı interface'i implement edebilir.
+
+**Örnek:**
+
+```csharp
+public interface IFlyable
+{
+    void Fly();
+}
+
+// Farklı hiyerarşilerden sınıflar aynı interface'i implement edebilir
+public class Bird : Animal, IFlyable  // Animal hiyerarşisinden
+{
+    public void Fly() { }
+}
+
+public class Airplane : Vehicle, IFlyable  // Vehicle hiyerarşisinden
+{
+    public void Fly() { }
+}
+
+// Bird ve Airplane akraba değil ama ikisi de IFlyable
+```
+
+**Neden?**
+* **Interface:** Sadece sözleşme/rol
+* **State içermez**
+* **Farklı hiyerarşilerden sınıflar aynı rolü üstlenebilir**
+* **Birden fazla interface implement edilebilir**
+
+### Abstract Class: Akraba Olmak Zorunda
+
+**Abstract class'tan miras alan sınıflar akraba olmak zorunda.** Sadece gerçekten o türden olan sınıflar miras alabilir.
+
+**Örnek:**
+
+```csharp
+public abstract class Animal
+{
+    public string Name { get; set; }
+    public abstract void Speak();
+}
+
+// Sadece gerçekten Animal olan sınıflar miras alabilir
+public class Dog : Animal  // ✅ Dog gerçekten bir Animal
+{
+    public override void Speak() { }
+}
+
+public class Cat : Animal  // ✅ Cat gerçekten bir Animal
+{
+    public override void Speak() { }
+}
+
+// ❌ Bu yapılamaz:
+// public class Airplane : Animal  // Airplane bir Animal değil!
+```
+
+**Neden?**
+* **Abstract Class:** Gerçek bir "üst tür" modeli
+* **Ortak state ve kod içerir**
+* **Sadece gerçekten o türden olanlar miras almalı**
+* **C# çoklu miras desteklemez** (sadece bir abstract class'tan türeyebilir)
+
+### "Is-a" vs "Can-do" İlişkisi Detayı
+
+**Abstract Class: "Is-a" İlişkisi (Gerçek Tür)**
+
+```csharp
+public abstract class Animal
+{
+    public string Name { get; set; }
+    public abstract void Speak();
+}
+
+public class Dog : Animal  // ✅ Dog gerçekten bir Animal
+{
+    public override void Speak() { }
+}
+```
+
+**Ne demek?**
+- `Dog : Animal` → "Dog bir Animal'dır" (gerçek tür)
+- Dog gerçekten bir Animal'dır, sadece yapabilirlik değil
+- Sadece gerçekten Animal olan sınıflar miras alabilir
+- **Tür ilişkisi:** `Animal animal = new Dog();` → Çalışır ✅
+- **Polymorphism:** `animal.Speak();` → Dog.Speak() çalışır ✅
+
+**Interface: "Can-do" İlişkisi (Yapabilirlik)**
+
+```csharp
+public interface IFlyable
+{
+    void Fly();
+}
+
+public class Bird : Animal, IFlyable  // Bird uçabilir
+{
+    public void Fly() { }
+}
+
+public class Airplane : Vehicle, IFlyable  // Airplane uçabilir
+{
+    public void Fly() { }
+}
+```
+
+**Ne demek?**
+- `Bird : IFlyable` → "Bird uçabilir" (yapabilirlik)
+- Bird gerçekten bir IFlyable değil, sadece uçabilir
+- Farklı hiyerarşilerden sınıflar aynı interface'i implement edebilir
+- **Tür ilişkisi:** `IFlyable flyable = new Bird();` → Çalışır ✅
+- **Polymorphism:** `flyable.Fly();` → Bird.Fly() çalışır ✅
+
+### Karşılaştırma Tablosu
+
+| Özellik | Abstract Class | Interface |
+|--------|---------------|-----------|
+| **İlişki türü** | "Is-a" (gerçek tür) | "Can-do" (yapabilirlik) |
+| **Tür ilişkisi var mı?** | ✅ Evet (gerçek tür) | ✅ Evet (yapabilirlik türü) |
+| **Gerçek tür ilişkisi var mı?** | ✅ Evet | ❌ Hayır |
+| **Akraba olmak zorunda mı?** | ✅ Evet | ❌ Hayır |
+| **Farklı hiyerarşilerden kullanım** | ❌ Yok | ✅ Var |
+| **Örnek** | `Dog : Animal` (Dog bir Animal) | `Bird : Animal, IFlyable` (Bird uçabilir) |
+
+**Özet:**
+* **Abstract Class:** "Is-a" ilişkisi → Gerçekten o türden olmalı (akraba olmalı)
+* **Interface:** "Can-do" ilişkisi → Sadece yapabilirlik, akraba olmak zorunda değil
+
+**Her ikisinde de tür ilişkisi var ama:**
+- **Abstract Class:** Gerçek tür ilişkisi ("Dog bir Animal'dır")
+- **Interface:** Yapabilirlik türü ilişkisi ("Dog bir IAnimal'dır" = "Dog, IAnimal yapabilir")
+
+---
+
+## 8️⃣ Özet: Abstract Class vs Interface
 
 **Abstract class → "ortak taban + sözleşme"**
 
 * Ortak kod ve state tutar
 * Gerçek bir üst tür modeli
 * Tek base class (C# çoklu miras desteklemez)
+* **Akraba olmak zorunda** ("Is-a" ilişkisi)
 
 **Interface → "sadece sözleşme / rol"**
 
 * Sadece davranış tanımlar
 * Çoklu interface implement edilebilir
 * Farklı hiyerarşilerden sınıflar ortak davranış paylaşabilir
+* **Akraba olmak zorunda değil** ("Can-do" ilişkisi)
 
 ---
 
