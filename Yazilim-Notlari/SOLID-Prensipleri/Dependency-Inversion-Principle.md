@@ -6,11 +6,28 @@
 
 **Üst seviye sınıflar (iş yapan sınıflar), alt seviye sınıflara (detaylara) bağımlı olmamalıdır.**
 
+**Ne diyor:** "Üst seviye kod, alt seviye detaya değil, interface'e bağımlı olmalı"
+
 Her iki taraf da **soyutlamalara** (interface'lere) bağımlı olmalıdır.
 
 Kısacası:
 
 > **Detaylar soyutlamalara bağlanır, üst seviye kod detaya bağımlı olmaz.**
+
+**Kısa örnek:**
+```csharp
+// ❌ DIP ihlali
+public class OrderService
+{
+    private readonly FileLogger _logger;  // Detaya bağımlı
+}
+
+// ✅ DIP uygulaması
+public class OrderService
+{
+    private readonly ILogger _logger;  // Interface'e bağımlı
+}
+```
 
 ---
 
@@ -60,7 +77,7 @@ DIP ile:
 
 ✔ Detayları (FileLogger, DatabaseLogger) istendiğinde kolayca değiştirirsin
 
-✔ OCP ve LSP ile birlikte esnek bir mimari oluşur
+✔ **OCP** (Open/Closed Principle - Açık genişlemeye, kapalı değişikliğe) ve **LSP** (Liskov Substitution Principle - Türeyen sınıflar, base sınıfın yerine kullanılabilmeli) ile birlikte esnek bir mimari oluşur
 
 ---
 

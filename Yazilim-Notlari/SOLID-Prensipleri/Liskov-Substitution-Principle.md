@@ -4,6 +4,17 @@
 
 > Yani `Dog`, bir `IAnimal` gibi davranabilmelidir.
 
+**Kısa örnek:**
+```csharp
+// ✅ LSP uygulaması
+IAnimal animal = new Dog();  // Dog, IAnimal'ın yerine kullanılabilir
+animal.Speak();  // Sorunsuz çalışır
+
+// ❌ LSP ihlali
+IAnimal animal = new Cat();  // Cat, IAnimal'ın yerine kullanılamaz
+animal.Speak();  // Hata fırlatır → LSP ihlali!
+```
+
 ---
 
 ## 1️⃣ LSP ne işe yarar?
