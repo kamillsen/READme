@@ -1,0 +1,14 @@
+=> indexleme nedir ? (Veri tabanında)
+
+=> Truncate nedir ?  Delete ile farkı ?
+
+=> OOP
+
+=>  Access Token  -  Refresh Token
+    => Nerde saklanır , saklanmalı ?
+    => Refresh token çalınırsa ne yapılmalı ?
+    => JWT ile hangi veriler taşınır  , taşınmalı , riskleri ?
+
+=> Kimlik ve Yetki yöntemleri ?
+
+
