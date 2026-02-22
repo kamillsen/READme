@@ -4,11 +4,15 @@
 
 => OOP
 
-=>  Access Token  -  Refresh Token
+=>  Access Token  -  Refresh Token  JWT
     => Nerde saklanır , saklanmalı ?
     => Refresh token çalınırsa ne yapılmalı ?
     => JWT ile hangi veriler taşınır  , taşınmalı , riskleri ?
 
 => Kimlik ve Yetki yöntemleri ?
 
+
+=> Rollback nedir ?
+
+=> Polymorhism - inheritance ilişkisi ?
 
