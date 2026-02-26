@@ -64,7 +64,7 @@ const kullaniciSlice = createSlice({
   
   reducers: {
     // Her reducer fonksiyonu bir action'dır
-    girisYap: (state, action) => {
+    girisYap: (state, action) => {  // action => gönderilen veri
       // action.payload = { isim: 'Ali', email: 'ali@mail.com' }
       state.isim = action.payload.isim;
       state.email = action.payload.email;
