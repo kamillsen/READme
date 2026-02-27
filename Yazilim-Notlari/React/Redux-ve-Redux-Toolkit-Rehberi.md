@@ -8,10 +8,12 @@ Redux, JavaScript uygulamaları için **merkezi state yönetim kütüphanesidir*
 
 Redux'ın yönettiği veriler iki kaynaktan gelir:
 
-| Veri Kaynağı | Örnekler |
-|-------------|----------|
-| **Kullanıcı Etkileşimleri** | Form girişleri, buton tıklamaları, sepet ekleme/çıkarma |
-| **API Cevapları** | Veritabanından gelen ürün listesi, kullanıcı profili, bildirimler |
+
+| Veri Kaynağı                | Örnekler                                                          |
+| --------------------------- | ----------------------------------------------------------------- |
+| **Kullanıcı Etkileşimleri** | Form girişleri, buton tıklamaları, sepet ekleme/çıkarma           |
+| **API Cevapları**           | Veritabanından gelen ürün listesi, kullanıcı profili, bildirimler |
+
 
 ### Redux'ın Yönettiği Veri Türleri:
 
@@ -30,14 +32,16 @@ Component → Dispatch → Action → Reducer → Store → Component (güncelle
 
 ### Temel Kavramlar ve Görevleri
 
-| Kavram | Görevi | Benzetme |
-|--------|--------|----------|
-| **Store** | Tüm state'lerin merkezi deposu | Apartmanın su deposu |
-| **Action** | Ne yapılacağını tanımlayan nesne | "Su ver" komutu |
-| **Reducer** | Action'a göre state'i güncelleyen fonksiyon | Suyun borulardan dağıtılması |
-| **Dispatch** | Action'ı store'a gönderme işlemi | Musluğu açma hareketi |
-| **useSelector** | Store'dan veri okuma | Depodan su alma |
-| **useDispatch** | Action gönderme | Musluğu çevirme |
+
+| Kavram          | Görevi                                      | Benzetme                     |
+| --------------- | ------------------------------------------- | ---------------------------- |
+| **Store**       | Tüm state'lerin merkezi deposu              | Apartmanın su deposu         |
+| **Action**      | Ne yapılacağını tanımlayan nesne            | "Su ver" komutu              |
+| **Reducer**     | Action'a göre state'i güncelleyen fonksiyon | Suyun borulardan dağıtılması |
+| **Dispatch**    | Action'ı store'a gönderme işlemi            | Musluğu açma hareketi        |
+| **useSelector** | Store'dan veri okuma                        | Depodan su alma              |
+| **useDispatch** | Action gönderme                             | Musluğu çevirme              |
+
 
 ---
 
@@ -150,11 +154,13 @@ export default urunSlice.reducer;
 
 Yukarıdaki `urunSlice` reducer'larında `action.payload`'ın yapısının farklı olduğuna dikkat edin:
 
-| Reducer | action.payload Yapısı | Dispatch Kullanımı |
-|---------|----------------------|-------------------|
-| `urunSil` | Direkt değer (sayı) | `dispatch(urunSil(3))` |
-| `stokGuncelle` | Nesne `{ id, yeniStok }` | `dispatch(stokGuncelle({ id: 1, yeniStok: 3 }))` |
-| `urunEkle` | Nesne `{ id, isim, fiyat, stok }` | `dispatch(urunEkle({ id: 3, isim: 'Klavye', ... }))` |
+
+| Reducer        | action.payload Yapısı             | Dispatch Kullanımı                                   |
+| -------------- | --------------------------------- | ---------------------------------------------------- |
+| `urunSil`      | Direkt değer (sayı)               | `dispatch(urunSil(3))`                               |
+| `stokGuncelle` | Nesne `{ id, yeniStok }`          | `dispatch(stokGuncelle({ id: 1, yeniStok: 3 }))`     |
+| `urunEkle`     | Nesne `{ id, isim, fiyat, stok }` | `dispatch(urunEkle({ id: 3, isim: 'Klavye', ... }))` |
+
 
 **Neden farklı?**
 
@@ -210,6 +216,7 @@ export const store = configureStore({
   reducer: {
     // "kullanici" ve "urun" isimleri çok önemli!
     // Bu isimler useSelector'da kullanılacak
+    // burdaki kullanici ve urun ismi slice'lardaki name kısmından dolayı değil. 
     kullanici: kullaniciReducer,  // state.kullanici ile erişilir
     urun: urunReducer             // state.urun ile erişilir
   }
@@ -382,6 +389,10 @@ Birden fazla slice'ta aynı isimde reducer olsa bile `name` sayesinde ayırt edi
 ### 5.2. Store'daki İsimler Ne İşe Yarar?
 
 ```javascript
+import { configureStore } from '@reduxjs/toolkit';
+import kullaniciReducer from './kullaniciSlice';
+import urunReducer from './urunSlice';
+
 export const store = configureStore({
   reducer: {
     kullanici: kullaniciReducer,  // Bu isim useSelector'da kullanılır
@@ -468,18 +479,20 @@ function UrunYonetimi() {
 
 ## 7. Özet Tablosu
 
-| Kavram | Görevi | Kullanım Şekli | Örnek |
-|--------|--------|----------------|-------|
-| **createSlice** | State + Reducer + Action oluşturur | `createSlice({ name, initialState, reducers })` | `const userSlice = createSlice(...)` |
-| **name** | Slice'ın ismi, action'lara önek olur | `name: 'kullanici'` | Action: `"kullanici/girisYap"` |
-| **initialState** | Başlangıç değerleri | Çoklu state tanımı | `{ isim: '', yas: 0, liste: [] }` |
-| **reducers** | State'i güncelleyen fonksiyonlar | `artir: (state) => { }` | State.değer değiştirilir |
-| **actions** | Otomatik oluşan action'lar | `slice.actions` | `girisYap, cikisYap` |
-| **reducer** | Store'a eklenecek ana fonksiyon | `slice.reducer` | Store'a eklenir |
-| **configureStore** | Store'u oluşturur | `configureStore({ reducer })` | Tüm reducer'lar birleşir |
-| **useSelector** | Store'dan veri okur | `useSelector(state => state.anahtar)` | `state.kullanici.isim` |
-| **useDispatch** | Action gönderir | `const dispatch = useDispatch()` | `dispatch(girisYap())` |
-| **state.anahtar** | Store'daki slice ismi | `state.kullanici` | `kullanici` reducer isminden gelir |
+
+| Kavram             | Görevi                               | Kullanım Şekli                                  | Örnek                                |
+| ------------------ | ------------------------------------ | ----------------------------------------------- | ------------------------------------ |
+| **createSlice**    | State + Reducer + Action oluşturur   | `createSlice({ name, initialState, reducers })` | `const userSlice = createSlice(...)` |
+| **name**           | Slice'ın ismi, action'lara önek olur | `name: 'kullanici'`                             | Action: `"kullanici/girisYap"`       |
+| **initialState**   | Başlangıç değerleri                  | Çoklu state tanımı                              | `{ isim: '', yas: 0, liste: [] }`    |
+| **reducers**       | State'i güncelleyen fonksiyonlar     | `artir: (state) => { }`                         | State.değer değiştirilir             |
+| **actions**        | Otomatik oluşan action'lar           | `slice.actions`                                 | `girisYap, cikisYap`                 |
+| **reducer**        | Store'a eklenecek ana fonksiyon      | `slice.reducer`                                 | Store'a eklenir                      |
+| **configureStore** | Store'u oluşturur                    | `configureStore({ reducer })`                   | Tüm reducer'lar birleşir             |
+| **useSelector**    | Store'dan veri okur                  | `useSelector(state => state.anahtar)`           | `state.kullanici.isim`               |
+| **useDispatch**    | Action gönderir                      | `const dispatch = useDispatch()`                | `dispatch(girisYap())`               |
+| **state.anahtar**  | Store'daki slice ismi                | `state.kullanici`                               | `kullanici` reducer isminden gelir   |
+
 
 ---
 
@@ -492,3 +505,4 @@ function UrunYonetimi() {
 - **Birden çok state**: initialState içinde dilediğin kadar state tanımlayabilirsin
 - **Çoklu slice**: Farklı özellikler için ayrı slice'lar oluştur, store'da birleştir
 - **action.payload**: Tek değer gönderilecekse direkt değer, birden fazla bilgi gönderilecekse nesne olarak dispatch edilir
+
