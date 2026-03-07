@@ -1,0 +1,23 @@
+PERMISSION-BASED AUTHORIZATION
+═══════════════════════════════════════════════════════════
+
+🔵 SEVİYE 1: ROL BAZLI (RBAC)
+    ├── Admin    → Her şey
+    ├── Editor   → Makale işlemleri
+    └── Viewer   → Sadece okuma
+
+🔵 SEVİYE 2: İZİN BAZLI (Permission)
+    ├── user.create
+    ├── user.delete
+    ├── article.publish
+    └── report.export
+
+🔵 SEVİYE 3: KULLANICI ÖZEL (User-Based)
+    ├── Mehmet → "article.delete" YOK
+    ├── Zeynep → "article.update" VAR
+    └── Ali    → "report.export" VAR
+
+🔵 SEVİYE 4: KAYNAK BAZLI (Resource-Based)
+    ├── Sadece kendi makalemi düzenle
+    ├── Sadece kendi departmanımın raporlarını gör
+    └── Sadece belirli projelerde çalış

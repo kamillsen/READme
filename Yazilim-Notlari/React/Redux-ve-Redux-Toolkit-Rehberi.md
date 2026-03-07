@@ -150,7 +150,61 @@ export const {
 export default urunSlice.reducer;
 ```
 
-### 3.3. action.payload Yapısı: Direkt Değer mi, Nesne mi?
+### 3.3. `export default` vs Named Export (Import Farkları)
+
+Slice dosyalarının sonunda iki farklı export yöntemi bir arada kullanılır:
+
+```javascript
+// Named Export - Süslü parantezle, BİREBİR AYNI İSİMLE import edilmek zorunda
+export const { urunEkle, urunSil, stokGuncelle } = urunSlice.actions;
+
+// Default Export - Dosya başına SADECE 1 TANE olabilir
+export default urunSlice.reducer;
+```
+
+**Default Export Kuralları:**
+
+- Bir dosyada yalnızca **1 adet** `export default` olabilir. Bu, o dosyanın **ana çıkışıdır**.
+- Import sırasında **istediğin ismi** verebilirsin, süslü parantez kullanılmaz:
+
+```javascript
+// Hepsi aynı şeyi import eder - hepsi geçerli!
+import urunReducer from './urunSlice';
+import abcReducer from './urunSlice';
+import herhangibirIsim from './urunSlice';
+```
+
+**Named Export Kuralları:**
+
+- Bir dosyada **birden fazla** named export olabilir.
+- Import sırasında **birebir aynı isim** kullanılmalı ve **süslü parantez** zorunludur:
+
+```javascript
+// Doğru - İsimler birebir aynı
+import { urunEkle, urunSil } from './urunSlice';
+
+// Yanlış - İsim farklı, çalışmaz!
+import { productAdd } from './urunSlice'; // undefined olur
+```
+
+**Slice dosyalarında neden bu şekilde kullanılır?**
+
+| Export Türü        | Ne Export Ediliyor   | Neden?                                          |
+| ------------------ | -------------------- | ----------------------------------------------- |
+| `export default`   | `slice.reducer`      | Dosyanın tek ana çıkışı, store'a eklenir        |
+| `export const { }` | `slice.actions`      | Birden fazla action var, hepsi ayrı ayrı lazım  |
+
+```javascript
+// store/index.js
+import kullaniciReducer from './kullaniciSlice';  // default → istediğin isim
+import urunReducer from './urunSlice';            // default → istediğin isim
+
+// component içinde
+import { girisYap, cikisYap } from './kullaniciSlice'; // named → aynı isim zorunlu
+import { urunEkle, urunSil } from './urunSlice';       // named → aynı isim zorunlu
+```
+
+### 3.4. action.payload Yapısı: Direkt Değer mi, Nesne mi?
 
 Yukarıdaki `urunSlice` reducer'larında `action.payload`'ın yapısının farklı olduğuna dikkat edin:
 
@@ -204,7 +258,7 @@ reducers: {
 
 Her iki yaklaşım da çalışır. Önemli olan, ekipteki herkesin aynı convention'ı takip etmesidir.
 
-### 3.4. Store Yapılandırması (store/index.js)
+### 3.5. Store Yapılandırması (store/index.js)
 
 ```javascript
 import { configureStore } from '@reduxjs/toolkit';
