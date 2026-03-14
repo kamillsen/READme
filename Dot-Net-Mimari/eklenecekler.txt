@@ -1,0 +1,2 @@
+=> DB migration. Yani db de yapılan değişiklikleri takip etme. 
+=> Kullanıcı işlem geçmişi tutma.
